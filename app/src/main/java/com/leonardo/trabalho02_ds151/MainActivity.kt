@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -26,6 +27,10 @@ class MainActivity : AppCompatActivity() {
         recyclerViewTeams = findViewById(R.id.mainList)
         recyclerViewTeams.adapter = TeamAdapter(this.createTeams(), this)
         recyclerViewTeams.layoutManager = LinearLayoutManager(this)
+        recyclerViewTeams.setHasFixedSize(true)
+        recyclerViewTeams.addItemDecoration(
+            DividerItemDecoration(this, RecyclerView.VERTICAL)
+        )
 
     }
 
