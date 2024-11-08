@@ -22,9 +22,9 @@ class DetailActivity : AppCompatActivity() {
 
             logo.setImageResource(team.logoResId)
             name.text = team.name
-            city.text = "Cidade: ${team.city}"
-            stadium.text = "Estádio: ${team.stadium}"
-            championships.text = "Títulos: ${team.championships}"
+            "Cidade: ${team.city}".also { city.text = it }
+            "Estádio: ${team.stadium}".also { stadium.text = it }
+            "Títulos: ${team.championships}".also { championships.text = it }
         }
     }
 }
