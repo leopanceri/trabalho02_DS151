@@ -2,52 +2,36 @@ package com.leonardo.trabalho02_ds151
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var recyclerViewTeams: RecyclerView
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewTeams)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        val teamList = getTeamList()
+        val adapter = TeamAdapter(teamList) { team ->
+            val intent = Intent(this, DetailActivity::class.java)
+            intent.putExtra("TEAM", team)
+            startActivity(intent)
         }
-        recyclerViewTeams = findViewById(R.id.mainList)
-        recyclerViewTeams.adapter = TeamAdapter(this.createTeams(), this)
-        recyclerViewTeams.layoutManager = LinearLayoutManager(this)
-        recyclerViewTeams.setHasFixedSize(true)
-        recyclerViewTeams.addItemDecoration(
-            DividerItemDecoration(this, RecyclerView.VERTICAL)
-        )
-
+        recyclerView.adapter = adapter
     }
 
-    private fun createTeams(): List<Team>{
+    private fun getTeamList(): List<Team> {
         return listOf(
-            Team(R.drawable.sf49, "São Francisco 49ers","NFC Oeste", 5, "Time que sempre promete e não entrega nada"),
-            Team(R.drawable.patriots, "New England Patriots","AFC Leste", 6, "Time do ex marido da Gisele"),
-            Team(R.drawable.kansas, "Kansas City Chiefs", "AFC Oeste", 4,"BABABABABABBABABA"),
-            Team(R.drawable.detroid, "Detrid Lions", "NFC Norte", 0,"BABABABABABBABABA"),
-            Team(R.drawable.eagles, "Philadelfia Eagles", "NFC Leste", 0,"BABABABABABBABABA"),
-            Team(R.drawable.saints, "New OrleansSaints", "NFC Sul", 0,"BABABABABABBABABA")
-
+            Team("New England Patriots", "Foxborough, MA", "Gillette Stadium", 6, R.drawable.patriots),
+            Team("Dallas Cowboys", "Arlington, TX", "AT&T Stadium", 5, R.drawable.cowboys),
+            Team("Pittsburgh Steelers", "Pittsburgh, PA", "Heinz Field", 6, R.drawable.steelers),
+            Team("Green Bay Packers", "Green Bay, WI", "Lambeau Field", 4, R.drawable.packers),
+            Team("San Francisco 49ers", "Santa Clara, CA", "Levi's Stadium", 5, R.drawable.forty_niners),
+            Team("New York Giants", "East Rutherford, NJ", "MetLife Stadium", 4, R.drawable.giants)
         )
-    }
-
-    fun goNextActivity(view: View){
-        val intent = Intent(this, DetailActivity::class.java)
-        startActivity(intent)
     }
 }

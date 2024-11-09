@@ -1,35 +1,30 @@
 package com.leonardo.trabalho02_ds151
 
-import android.os.Build
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import android.widget.ImageView
+import android.widget.TextView
 
 class DetailActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_detail)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
-        //val closeBtn = findViewById<Button>(R.id.closeBtn)
-        val bundle = intent.extras
-        if(bundle != null){
-            val user = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
-                bundle.getParcelable("user", Team::class.java)
-            }else{
-                bundle.getParcelable("user")
-            }
+        val team = intent.getParcelableExtra<Team>("TEAM")
 
+        if (team != null) {
+            val logo = findViewById<ImageView>(R.id.imageViewDetailLogo)
+            val name = findViewById<TextView>(R.id.textViewDetailName)
+            val city = findViewById<TextView>(R.id.textViewCity)
+            val stadium = findViewById<TextView>(R.id.textViewStadium)
+            val championships = findViewById<TextView>(R.id.textViewChampionships)
+
+            logo.setImageResource(team.logoResId)
+            name.text = team.name
+            "Cidade: ${team.city}".also { city.text = it }
+            "Estádio: ${team.stadium}".also { stadium.text = it }
+            "Títulos: ${team.championships}".also { championships.text = it }
         }
-        //closeBtn.setOnClickListener(){
-        //     finish()
-        //}
     }
 }
